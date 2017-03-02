@@ -1,34 +1,54 @@
 #!/usr/bin/env python
 
 '''
-mock api endpoint
+mock api endpoint for a server that processes datasets prior
+to them being released.
+
+Start a release by POSTing to /release/. Format:
+{
+    id:<id>,
+    name:<name>
+}
 '''
 
-from flask import Flask, request
-import json
+from flask import Flask, request, json, Response
 
 app = Flask( __name__ )
 
-@app.route('/dataverse_stub/published', methods=['POST'])
+datasets_in_release = {}
+
+@app.route('/start/', methods=['POST'])
 def dataverse_mock():
     '''
     stub so that the async release process has something to call
     '''
-    print('dataverse_mock called')
-    return 'dataverse_mock called'
+    release_data = json.loads(request.data)
+    print('started release process of %s' % release_data )
+    print('id %s' % release_data[u'id'] )
+    datasets_in_release[int(release_data[u'id'])] = release_data
+    return '%s release started' % release_data[u'id']
 
-@app.route('/release',methods=['POST'])
-def release_dataset():
+@app.route('/pending/',methods=['GET'])
+def list_pending():
     '''
-    recieve requests to release datasets.
-    stored on filesystem for accessability to async release process
+    see what releases are pending
     '''
-    dat = request.json
-    dset_id = dat['datasetId']
-    with open( 'data/%d.json' % dset_id, 'w' ) as opf:
-        json.dump( dat, opf, indent = 2 )
-    return 'ok'
-    
+    return ("%s" % datasets_in_release.keys())
+
+@app.route('/complete/<int:id>', methods=['POST'])
+def release(id):
+    '''
+    tell dataverse that a given dataset release was completed, and so the DS
+    release process can proceed.
+    '''
+    if ( datasets_in_release.has_key(id) ):
+        print("process of dataset %s completed. Telling dataverse about that." % id)
+        ds = datasets_in_release.pop(id)
+        # TODO: POST ds to dataverse.
+        return "Dataset %s released." % id
+    else:
+        return Response(response="Dataset %s not found." % id, status=404)
+
 
 if __name__ == '__main__':
     app.run()
