@@ -17,11 +17,29 @@ app = Flask( __name__ )
 
 datasets_in_release = {}
 
+@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+def dump_equest(v):
+    '''
+    Just dump the request you got to stdout.
+    '''
+    print("Got a %s request" % request.method )
+    print("headers:")
+    print(request.headers)
+    print("/headers:")
+    print("body:")
+    print(request.data)
+    print("/body")
+    return ("OK")
+
+
 @app.route('/start/', methods=['POST'])
 def dataverse_mock():
     '''
     stub so that the async release process has something to call
     '''
+    print("Got POST:")
+    print(request.data)
+    print("---")
     release_data = json.loads(request.data)
     print('started release process of %s' % release_data )
     print('id %s' % release_data[u'id'] )
