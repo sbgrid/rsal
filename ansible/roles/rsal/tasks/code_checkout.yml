@@ -1,0 +1,28 @@
+---
+#
+- name: "git-install"
+  tags: rsal
+  yum: name=git state=present
+
+#- name: "ssh-git: github host key fingerprint "
+- name: "ssh-git: bitbucket host key fingerprint "
+  tags: rsal
+  copy: src=etc/ssh/ssh_known_hosts dest=/etc/ssh/ssh_known_hosts force=yes backup=yes
+
+- name: "source directory existance"
+  tags: rsal
+  file: path="{{ RSAL_PATH }}" state=directory
+
+# ssh-agent does handle keys through ansible
+- name: "git, webupdate" 
+  when: ( "VirtualBox" != ansible_product_name ) # don't try to do this from within VirtualBox, assuming that's vagrant
+  #git: repo=git://github.com/sbgrid/data-capture-module.git dest={{ RSAL_PATH }}
+  git: repo=git@bitbucket.org/pameyer/rsal_dev.git dest={{ RSAL_PATH }}
+  tags: 
+   - code-update
+   - rsal
+
+- name: "install python dependencies"
+  pip: requirements={{ RSAL_PATH }}/mocks/requirements.txt
+  tags: rsal
+

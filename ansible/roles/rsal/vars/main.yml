@@ -1,0 +1,6 @@
+RSAL_PATH: "/usr/local/rsal"
+
+HOLD_DIRECTORY: "/hold"
+DOWNLOAD_DIRECTORY: "/public"
+DOI_PREFIX: "10.5072/FK2"
+
