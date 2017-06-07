@@ -12,12 +12,14 @@ Start a release by POSTing to /release/. Format:
 '''
 
 from flask import Flask, request, json, Response
+import requests
+import subprocess
 
 app = Flask( __name__ )
 
 datasets_in_release = {}
 
-@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+#@app.route('/dump/<v>', methods=['POST', 'DELETE'])
 def dump_equest(v):
     '''
     Just dump the request you got to stdout.
@@ -31,6 +33,19 @@ def dump_equest(v):
     print("/body")
     return ("OK")
 
+@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+def v2(v):
+    body = request.data
+    print('recieved body:')
+    print(body)
+    lns=body.split('\n')
+    inv_id = lns[0].strip()
+    print('invokation id: %s ' % inv_id )
+    print('calling subprocess')
+    subprocess.Popen( ['./resume.sh',inv_id] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
+    print('done')
+    
+    return ('OK')
 
 @app.route('/start/', methods=['POST'])
 def dataverse_mock():
