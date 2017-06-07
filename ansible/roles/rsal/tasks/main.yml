@@ -19,3 +19,8 @@
 
 - include: code_checkout.yml
 
+- name: "package installation (DV queries)"
+  yum: pkg={{ item }} state=present
+  tags: rsal
+  with_items:
+   - jq
