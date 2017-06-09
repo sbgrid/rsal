@@ -1,0 +1,12 @@
+
+lock file = /var/run/rsync.lock
+log file = /var/log/rsyncd.log
+pid file = /var/log/rsyncd.pid
+
+
+[{{DOI_AUTH}}]
+  path = {{ DOWNLOAD_DIRECTORY }}
+  uid = {{ RO_USER }}
+  gid = {{ RO_GROUP }}
+  read only = yes
+

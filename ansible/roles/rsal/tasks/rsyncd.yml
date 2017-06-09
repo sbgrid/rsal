@@ -1,0 +1,24 @@
+- name: rsyncd group
+  group: name={{RO_GROUP}} state=present gid={{RO_GID}}
+  tags: rsal
+
+- name: rsyncd user
+  user: name={{RO_USER}} shell=/bin/bash system=yes group={{RO_GROUP}} uid={{RO_UID}}
+  tags: rsal
+
+- name: distribution directory path existance
+  file: path="{{DOWNLOAD_DIRECTORY}}/{{DOI_PATH}}" state=directory owner={{RO_USER}} group={{RO_GROUP}}
+  tags: rsal
+
+- name: xinetd configuration
+  copy: src=etc/xinetd.d/rsync dest=/etc/xinetd.d/rsync force=yes backup=yes
+  tags: rsal
+
+- name: xinetd enable
+  service: name=xinetd state=started enabled=yes
+  tags: rsal
+
+- name: rsyncd configuration
+  template: src=etc/rsyncd.conf.j2 dest=/etc/rsyncd.conf force=yes backup=yes
+  tags: rsal
+

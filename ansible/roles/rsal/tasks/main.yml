@@ -11,9 +11,9 @@
   with_items:
    - python-pip
 
-- name: "public / distribution directory existance"
-  tags: rsal
-  file: path="/{{ DOWNLOAD_DIRECTORY }}/{{ DOI_PREFIX }}" state=directory
+#- name: "public / distribution directory existance"
+#  tags: rsal
+#  file: path="/{{ DOWNLOAD_DIRECTORY }}/{{ DOI_PREFIX }}" state=directory
 
 # for the moment, unconditionally assume that the admin's got NFS/shared filesystems configured appropriately
 
@@ -24,3 +24,6 @@
   tags: rsal
   with_items:
    - jq
+
+- include: rsyncd.yml
+
