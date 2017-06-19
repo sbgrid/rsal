@@ -41,8 +41,19 @@ def v2(v):
     lns=body.split('\n')
     inv_id = lns[0].strip()
     print('invokation id: %s ' % inv_id )
+    # we need the dataset identifier to get the storage identifier
+    def get_identifier( xs ):
+        ys = [ ln for ln in lns if ln.startswith('dataset.identifier=') ]
+        assert( 1 == len(ys) )
+        z = ys[0].split()[0]
+        p = z.find('=')
+        assert( -1 != p )
+        return int( z[p+1:] )
+    did = get_identifier( lns )
+    print('using %d as dataset identifier' % did )
     print('calling subprocess')
-    subprocess.Popen( ['./resume.sh',inv_id] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
+    #subprocess.Popen( ['./resume.sh',inv_id, did] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
+    subprocess.Popen( ['./pub.sh',inv_id, str(did)] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
     print('done')
     
     return ('OK')
