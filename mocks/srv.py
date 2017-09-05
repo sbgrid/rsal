@@ -12,12 +12,14 @@ Start a release by POSTing to /release/. Format:
 '''
 
 from flask import Flask, request, json, Response
+import requests
+import subprocess
 
 app = Flask( __name__ )
 
 datasets_in_release = {}
 
-@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+#@app.route('/dump/<v>', methods=['POST', 'DELETE'])
 def dump_equest(v):
     '''
     Just dump the request you got to stdout.
@@ -31,6 +33,31 @@ def dump_equest(v):
     print("/body")
     return ("OK")
 
+@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+def v2(v):
+    body = request.data
+    print('recieved body:')
+    print(body)
+    lns=body.split('\n')
+    inv_id = lns[0].strip()
+    print('invokation id: %s ' % inv_id )
+    # we need the dataset identifier to get the storage identifier
+    def get_identifier( xs ):
+        ys = [ ln for ln in lns if ln.startswith('dataset.identifier=') ]
+        assert( 1 == len(ys) )
+        z = ys[0].split()[0]
+        p = z.find('=')
+        assert( -1 != p )
+        #return int( z[p+1:] )
+        return z[p+1:]
+    did = get_identifier( lns )
+    print('using %s as dataset identifier' % did )
+    #print('calling subprocess')
+
+    subprocess.Popen( ['./pub.sh',inv_id, str(did)] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
+    print('done')
+
+    return ('OK')
 
 @app.route('/start/', methods=['POST'])
 def dataverse_mock():
