@@ -33,7 +33,8 @@ def dump_equest(v):
     print("/body")
     return ("OK")
 
-@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+#@app.route('/dump/<v>', methods=['POST', 'DELETE'])
+@app.route('/release/<v>', methods=['POST', 'DELETE'])
 def v2(v):
     body = request.data
     print('recieved body:')
@@ -48,11 +49,12 @@ def v2(v):
         z = ys[0].split()[0]
         p = z.find('=')
         assert( -1 != p )
-        return int( z[p+1:] )
+        #return int( z[p+1:] )
+        return z[p+1:]
     did = get_identifier( lns )
-    print('using %d as dataset identifier' % did )
-    print('calling subprocess')
-    #subprocess.Popen( ['./resume.sh',inv_id, did] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
+    print('using %s as dataset identifier' % did )
+    #print('calling subprocess')
+    
     subprocess.Popen( ['./pub.sh',inv_id, str(did)] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
     print('done')
     
