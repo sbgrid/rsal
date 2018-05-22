@@ -3,11 +3,12 @@
 '''
 release request reciever
 '''
-#
+
 REQDIR='/public/stage/'
 
 import sys
 import os
+import json
 
 def recieve():
     print('Content-type: text/plain\n')
@@ -28,7 +29,8 @@ def recieve():
         xs = {'datasetIdentifier':did, 'invocationId':inv_id}
         fn = os.path.join( REQDIR, '%d.json' % pid )
         with open(fn, 'w') as opf:
-            opf.write(txt)
+            #opf.write(txt)
+            opf.write( json.dumps( xs ) )
         print('Status: 200 OK\n\nOK')
     except AssertionError:
         print('Status: 400 Bad Request\n\nfailed assert\n')
