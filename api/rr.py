@@ -3,22 +3,17 @@
 '''
 release request reciever
 '''
-
+#
 REQDIR='/public/stage/'
 
 import sys
 import os
 
 def recieve():
+    print('Content-type: text/plain\n')
     txt = sys.stdin.read()
-    def ok():
-        print('Status: 200 OK\n\nOK')
-        return
-    def bad():
-        print('Status: 400 Bad Request\n\n')
-        return
     # currently getting text from dataverse workflow
-    lns = txt.split('\n')
+    lns = txt.splitlines()
     inv_id = lns[0].strip()
     def get_identifier( xs ):
         ys = [ ln for ln in lns if ln.startswith('dataset.identifier=') ]
@@ -29,12 +24,16 @@ def recieve():
         return z[p+1:]
     try:
         did = get_identifier( lns )
+        pid = os.getpid()
+        xs = {'datasetIdentifier':did, 'invocationId':inv_id}
+        fn = os.path.join( REQDIR, '%d.json' % pid )
+        with open(fn, 'w') as opf:
+            opf.write(txt)
+        print('Status: 200 OK\n\nOK')
     except AssertionError:
-        bad()
-    pid = os.getpid()
-    xs = {'datasetIdentifier':did, 'invocationId':inv_id}
-    fn = os.path.join( REQDIR, '%d.json' % pid )
-    with open(fn, 'w') as opf:
-        opf.write(txt)
-    ok()
+        print('Status: 400 Bad Request\n\nfailed assert\n')
+    except IOError:
+        print('Status: 500 Internal Server Error\n\nIO issue\n')
 
+if __name__ == '__main__':
+    recieve()
