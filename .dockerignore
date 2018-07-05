@@ -1,3 +1,4 @@
 *swp
 #testdata/
 *.git
+tmp/
