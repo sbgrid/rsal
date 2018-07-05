@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 REQDIR='.'
-DOISHOULDER='10.5072/FK2'
+#DOISHOULDER='10.5072/FK2'
+DOISHOULDER='FK2'
 HOLD='/hold'
 PUBLIC='/public'
 
