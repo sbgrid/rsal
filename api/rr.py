@@ -33,10 +33,12 @@ def recieve():
     try:
         #did = get_identifier( lns )
         did = get_key( 'dataset.identifier')
-        sid = get_key('dataset.storageid_package')
+        #sid = get_key('dataset.storageid_package') 
         dbid = get_key('dataset.id')
+        d_pid = get_key('dataset.globalId')
         pid = os.getpid()
-        xs = {'datasetIdentifier':did, 'invocationId':inv_id,'storageId':sid,'dbId':dbid}
+        #xs = {'datasetIdentifier':did, 'invocationId':inv_id,'storageId':sid,'dbId':dbid}
+        xs = {'datasetIdentifier':did, 'invocationId':inv_id,'dbId':dbid,'datasetPersistentIdentifier':d_pid}
         fn = os.path.join( REQDIR, '%d.json' % pid )
         with open(fn, 'w') as opf:
             #opf.write(txt)

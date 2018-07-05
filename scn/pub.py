@@ -13,11 +13,17 @@ import shutil
 import os.path
 import os
 
+def storage_id_query(dv_api_key, dv_host, dset_pid): #TODO - stub
+    return '16389c3b4de-8052ecdd77c1'
+
+
 def pub(rfile, src=None):
     with open(rfile,'r') as inp:
         x = json.load( inp )
     ident = x['datasetIdentifier']
-    sid = x['storageId']
+    pid = x['datasetPersistentIdentifier']
+    #sid = x['storageId'] #FIXME - storage id not available in workflow invocations; query dataverse API instead
+    sid = storage_id_query(None, None, pid )
     invk_id = x['invocationId']
     src = os.path.join(HOLD,ident,sid)
     # sync/copy
