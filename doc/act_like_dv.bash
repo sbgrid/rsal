@@ -6,13 +6,16 @@ h=http://localhost:8889
 pid=$$
 
 dsid=3
-dsident=1
+#dsident=1
+dsident=1QKK1K
+stid=16389c3b4de-8052ecdd77c1
 invid="InvokeMe"
 
 TMPFILE=/tmp/${pid}.txt
 echo $invid > $TMPFILE
 echo "dataset.id=$dsid" >> $TMPFILE
 echo "dataset.identifier=$dsident" >> $TMPFILE
+echo "dataset.storageid_package=${stid}" >> $TMPFILE
 
 curl -i -X POST --data-binary @$TMPFILE ${h}/rr.py
 
