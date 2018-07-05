@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#h=http://localhost:8889
-h=http://localhost
+h=http://localhost:8889
+#h=http://localhost
 
 pid=$$
 
