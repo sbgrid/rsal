@@ -15,6 +15,13 @@ def recieve():
     txt = sys.stdin.read()
     # currently getting text from dataverse workflow
     lns = txt.splitlines()
+    def get_key(k):
+        ys = [ ln for ln in lns if ln.startswith('%s='%k) ]
+        assert( 1 == len(ys) )
+        z = ys[0].split()[0]
+        p = z.find('=')
+        assert( -1 != p )
+        return z[p+1:]
     inv_id = lns[0].strip()
     def get_identifier( xs ):
         ys = [ ln for ln in lns if ln.startswith('dataset.identifier=') ]
@@ -22,11 +29,14 @@ def recieve():
         z = ys[0].split()[0]
         p = z.find('=')
         assert( -1 != p )
-        return z[p+1:]
+        return z[p+1:].strip()
     try:
-        did = get_identifier( lns )
+        #did = get_identifier( lns )
+        did = get_key( 'dataset.identifier')
+        sid = get_key('dataset.storageid_package')
+        dbid = get_key('dataset.id')
         pid = os.getpid()
-        xs = {'datasetIdentifier':did, 'invocationId':inv_id}
+        xs = {'datasetIdentifier':did, 'invocationId':inv_id,'storageId':sid,'dbId':dbid}
         fn = os.path.join( REQDIR, '%d.json' % pid )
         with open(fn, 'w') as opf:
             #opf.write(txt)
