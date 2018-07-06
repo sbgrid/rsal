@@ -18,5 +18,5 @@ services:
     environment:
       DV_HOST: dv
     ports:
-      - '7080:80'
+      - '8889:80'
       - '873:873'
