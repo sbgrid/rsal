@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-REQDIR='.'
+REQDIR='/public/stage'
+REQPUB='/public/requests'
 #DOISHOULDER='10.5072/FK2'
 DOISHOULDER='FK2'
 HOLD='/hold'

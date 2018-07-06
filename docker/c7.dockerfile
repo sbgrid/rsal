@@ -5,7 +5,7 @@ COPY docker/rsyncd.conf /etc/rsyncd.conf
 COPY docker/entrypoint.sh /
 COPY doc/config/lighttpd-modules.conf /etc/lighttpd/modules.conf
 COPY doc//config/lighttpd.conf /etc/lighttpd/lighttpd.conf
-RUN mkdir -p /public/FK2 /public/stage ; echo "foo" > /public/FK2/foo.txt ; chown -R lighttpd:lighttpd /public/stage
+RUN mkdir -p /public/FK2 /public/stage /public/requests ; echo "foo" > /public/FK2/foo.txt ; chown -R lighttpd:lighttpd /public/stage
 RUN mkdir -p /opt/rsal/api /opt/rsal/scn
 COPY api/* /opt/rsal/api/
 COPY scn/* /opt/rsal/scn/
