@@ -17,6 +17,7 @@ services:
     container_name: rsal_srv
     environment:
       DV_HOST: dv
+      DV_APIKEY: burrito
     ports:
       - '8889:80'
       - '873:873'
