@@ -12,4 +12,5 @@ RUN mkdir /hold/
 COPY testdata/ /hold/
 EXPOSE 873
 EXPOSE 80
-
+HEALTHCHECK CMD curl --fail http://localhost/hw.py || exit 1
+CMD ["/entrypoint.sh"]

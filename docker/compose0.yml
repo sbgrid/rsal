@@ -1,0 +1,22 @@
+# docker-compose -f docker/compose0.yml --project-directory . build
+# docker-compose -f docker/compose0.yml --project-directory . up -d
+# docker-compose -f docker/compose0.yml --project-directory . down
+
+version: '3'
+
+services:
+  dv:
+    build:
+      context: .
+      dockerfile: docker/dv_mock.dockerfile
+    container_name: dv_srv
+  rsal:
+    build:
+      context: .
+      dockerfile: docker/c7.dockerfile
+    container_name: rsal_srv
+    environment:
+      DV_HOST: dv
+    ports:
+      - '7080:80'
+      - '873:873'
