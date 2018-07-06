@@ -22,5 +22,7 @@ class TestDV(TestCase):
         pkg = fs[0]
         sid = pkg['dataFile']['storageIdentifier']
         self.assertEqual('16389c3b4de-8052ecdd77c1',sid) # aka - this is what we've got in testdata
-
-
+    def test_resume_workflow(self):
+        invk_id = 'MockInvocationId'
+        r = self.app.post('/api/workflows/%s'%(invk_id), data='OK')
+        self.assertEqual(200, r.status_code)

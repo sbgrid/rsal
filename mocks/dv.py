@@ -15,11 +15,11 @@ def storage_id_query():
     r = {'x':x,'data':{'latestVersion':{'files':[{'dataFile':{'storageIdentifier':'16389c3b4de-8052ecdd77c1'}}]}}}
     return Response( json.dumps(r), mimetype='application/json')
 
-@app.route('/resume/<x>', methods=['POST'])
+@app.route('/api/workflows/<x>', methods=['POST'])
 def resume_workflow(x):
     return 'workflow %s resumed\n' % x
 
-@app.route('/abort/<x>', methods=['POST'])
+@app.route('/dump/<x>', methods=['POST'])
 def abort_workflow(x):
     return 'workflow %s aborted\n' % x
 
