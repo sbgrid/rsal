@@ -27,6 +27,10 @@ def abort_workflow(x):
 def hello():
     return 'Dataverse API mock exists\n'
 
+@app.route('/api/info/version')
+def version():
+    return '{"status":"OK","data":{"version":"4.8.1","build":"mock-for-rsal"}}'
+
 if __name__ == '__main__':
     app.run()
 

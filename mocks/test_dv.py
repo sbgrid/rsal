@@ -26,3 +26,6 @@ class TestDV(TestCase):
         invk_id = 'MockInvocationId'
         r = self.app.post('/api/workflows/%s'%(invk_id), data='OK')
         self.assertEqual(200, r.status_code)
+    def test_version(self):
+        r = self.app.get('/api/info/version')
+        self.assertEqual(200,r.status_code)
