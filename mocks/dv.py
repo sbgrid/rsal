@@ -17,7 +17,11 @@ def storage_id_query():
 
 @app.route('/api/workflows/<x>', methods=['POST'])
 def resume_workflow(x):
-    return 'workflow %s resumed\n' % x
+    try:
+        dv_key = request.headers['X-Dataverse-key']
+        return 'workflow %s resumed\n' % x
+    except KeyError:
+        return 'unauthenticated for workflow %s resume'%x, 401
 
 @app.route('/dump/<x>', methods=['POST'])
 def abort_workflow(x):
