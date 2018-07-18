@@ -10,6 +10,8 @@ services:
       context: .
       dockerfile: docker/dv_mock.dockerfile
     container_name: dv_srv
+    ports:
+      - '8083:8080'
   rsal:
     build:
       context: .

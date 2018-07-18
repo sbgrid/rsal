@@ -11,6 +11,10 @@ COPY api/* /opt/rsal/api/
 COPY scn/* /opt/rsal/scn/
 RUN mkdir /hold/
 COPY testdata/ /hold/
+ARG DV_HOST=http://dv_srv:8080
+ARG DV_API_KEY=burrito
+ENV DV_HOST ${DV_HOST}
+ENV DV_API_KEY ${DV_API_KEY}
 EXPOSE 873
 EXPOSE 80
 HEALTHCHECK CMD curl --fail http://localhost/hw.py || exit 1
