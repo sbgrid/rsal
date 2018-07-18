@@ -18,8 +18,11 @@ services:
       dockerfile: docker/c7.dockerfile
     container_name: rsal_srv
     environment:
-      DV_HOST: dv
+      #DV_HOST: dv
+      DV_HOST: http://dv_srv:8080
       DV_APIKEY: burrito
     ports:
       - '8889:80'
       - '873:873'
+    volumes:
+      - '.:/mnt'

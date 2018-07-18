@@ -1,6 +1,6 @@
 FROM centos:7
 RUN yum update; yum install -y epel-release 
-RUN yum install -y python36 python-virtualenv rsync lighttpd jq PyYAML
+RUN yum install -y python34 python-virtualenv rsync lighttpd jq PyYAML python2-pip python34-pip
 COPY docker/rsyncd.conf /etc/rsyncd.conf
 COPY docker/entrypoint.sh /
 COPY doc/config/lighttpd-modules.conf /etc/lighttpd/modules.conf
@@ -9,6 +9,7 @@ RUN mkdir -p /public/FK2 /public/stage /public/requests ; echo "foo" > /public/F
 RUN mkdir -p /opt/rsal/api /opt/rsal/scn
 COPY api/* /opt/rsal/api/
 COPY scn/* /opt/rsal/scn/
+RUN pip2 install -r /opt/rsal/scn/requirements.txt
 RUN mkdir /hold/
 COPY testdata/ /hold/
 ARG DV_HOST=http://dv_srv:8080

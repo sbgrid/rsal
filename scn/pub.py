@@ -20,8 +20,9 @@ def storage_id_query_mock(dv_api_key, dv_host, dset_pid):
 def storage_id_query(dv_api_key, dv_host, dset_pid):
     #return storage_id_query_mock(dv_api_key,dv_host,dset_pid)
     u = '%s/api/datasets/:persistentId/' % dv_host
+    print(u)
     r = requests.get(u, params={'persistentId':dset_pid},headers={'X-Dataverse-key':dv_api_key})
-    if 200 != r.status_code:
+    if 200 == r.status_code:
         j = r.json()
         fs = j['data']['latestVersion']['files']
         if 1 != len(fs):
@@ -84,6 +85,6 @@ def test2():
     print(r)
 
 if __name__ == '__main__':
-    #test1()
-    test2()
+    test1()
+    #test2()
 
