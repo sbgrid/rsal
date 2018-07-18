@@ -26,12 +26,19 @@ def storage_id_query(dv_api_key, dv_host, dset_pid):
         j = r.json()
         fs = j['data']['latestVersion']['files']
         if 1 != len(fs):
-            sys.stderr.write('ERROR: unexpected number of files reported for datataset %s'%(dset_pid))
+            sys.stderr.write('ERROR: unexpected number of files reported for datataset %s\n'%(dset_pid))
             sys.exit(1)
         sid=fs[0]['dataFile']['storageIdentifier']
         return sid
     else:
-        sys.stderr.write('ERROR: %d response from dataverse storage id query for %s' %(r.status_code, dset_pid))
+        sys.stderr.write('ERROR: %d response from dataverse storage id query for %s\n' %(r.status_code, dset_pid))
+        sys.exit(1)
+
+def resume_workflow(dv_api_key, dv_host, invk_id):
+    u = '%s/api/workflows/%s' % ( dv_host, invk_id )
+    r = requests.post(u, data='OK',headers={'X-Dataverse-key':dv_api_key})
+    if 200 != r.status_code:
+        sys.stderr.write('ERROR: problem resuming workflow %s (dataverse said %d)\n'%(invk_id,r.status_code))
         sys.exit(1)
 
 def get_env_config():
@@ -46,19 +53,22 @@ def get_env_config():
             v = os.environ[k]
             r[k] = v
         except KeyError:
-            sys.stderr.write('ERROR - unable to retrieve %s environment variable')
+            sys.stderr.write('ERROR - unable to retrieve %s environment variable\n')
             sys.exit(1)
     return r
 
 def pub(rfile, src=None, cfg=None):
+    sys.stdout.write('publishing from request file %s\n'%rfile)
     with open(rfile,'r') as inp:
         x = json.load( inp )
+    invk_id = x['invocationId']
     ident = x['datasetIdentifier']
     pid = x['datasetPersistentIdentifier']
+    sys.std.out.write('PID %s : invocation %s\n'%(pid,invk_id))
     if None == cfg:
         cfg = get_env_config()
     sid = storage_id_query( cfg['DV_API_KEY'],cfg['DV_HOST'], pid ) # dataverse API query since storage id isn't available in workflow invocation
-    invk_id = x['invocationId']
+    sys.stdout.write('storage ID: %s\n'%sid)
     src = os.path.join(HOLD,ident,sid)
     # sync/copy
     dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
@@ -71,6 +81,9 @@ def pub(rfile, src=None, cfg=None):
     os.symlink( dst, src )
 
     # report to dataverse that workflow can resume (TODO)
+    sys.stdout.write('telling DV to resume\n')
+    resume_workflow(cfg['DV_API_KEY'],cfg['DV_HOST'],invk_id)
+    sys.stdout.write('done\n')
 
 def test1():
     try:
