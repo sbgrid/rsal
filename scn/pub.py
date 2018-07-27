@@ -13,6 +13,7 @@ import sys
 import shutil
 import os.path
 import os
+import glob
 
 def storage_id_query_mock(dv_api_key, dv_host, dset_pid): 
     return '16389c3b4de-8052ecdd77c1'
@@ -85,6 +86,12 @@ def pub(rfile, src=None, cfg=None):
     resume_workflow(cfg['DV_API_KEY'],cfg['DV_HOST'],invk_id)
     sys.stdout.write('done\n')
 
+def pub_avail():
+    rs = glob.glob('%s/*.json'%(REQDIR))
+    for r in rs:
+        print(r)
+        pub(r)
+
 def test1():
     try:
         rf = sys.argv[1]
@@ -97,7 +104,12 @@ def test2():
     r = get_env_config()
     print(r)
 
+def test3():
+    pub_avail()
+
 if __name__ == '__main__':
-    test1()
+    #test1()
     #test2()
+    #test3()
+    pub_avail()
 
