@@ -64,7 +64,7 @@ def pub(rfile, src=None, cfg=None):
     invk_id = x['invocationId']
     ident = x['datasetIdentifier']
     pid = x['datasetPersistentIdentifier']
-    sys.std.out.write('PID %s : invocation %s\n'%(pid,invk_id))
+    sys.stdout.write('PID %s : invocation %s\n'%(pid,invk_id))
     if None == cfg:
         cfg = get_env_config()
     sid = storage_id_query( cfg['DV_API_KEY'],cfg['DV_HOST'], pid ) # dataverse API query since storage id isn't available in workflow invocation
@@ -74,7 +74,7 @@ def pub(rfile, src=None, cfg=None):
     dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
     shutil.copytree( src, dst )
 
-    # verify (TODO)
+    # verify (optional TODO)
 
     # clean / symlink
     shutil.rmtree( src )
