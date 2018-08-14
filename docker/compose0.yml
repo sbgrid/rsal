@@ -15,7 +15,8 @@ services:
   rsal:
     build:
       context: .
-      dockerfile: docker/c7.dockerfile
+      #dockerfile: docker/c7.dockerfile
+      dockerfile: docker/c7r.dockerfile
     container_name: rsal_srv
     environment:
       #DV_HOST: dv
