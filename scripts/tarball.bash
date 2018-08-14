@@ -11,4 +11,4 @@ if [ ! -d dist/ ]; then
 	mkdir dist
 fi
 
-tar zcf dist/rsal-${v}.tar.gz api/*py scn/pub.sh scn/requirements.txt doc/config/* 
+tar zcf dist/rsal-${v}.tar.gz api/*py scn/pub.py scn/requirements.txt doc/config/* 
