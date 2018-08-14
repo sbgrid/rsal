@@ -1,7 +1,7 @@
 FROM centos:7
 RUN yum update; yum install -y epel-release 
 RUN yum install -y python34 python-virtualenv rsync lighttpd jq PyYAML python2-pip python34-pip
-COPY docker/rsyncd.conf /etc/rsyncd.conf
+COPY doc/config/rsyncd.conf /etc/rsyncd.conf
 COPY docker/entrypoint.sh /
 COPY doc/config/lighttpd-modules.conf /etc/lighttpd/modules.conf
 COPY doc//config/lighttpd.conf /etc/lighttpd/lighttpd.conf
