@@ -44,7 +44,7 @@ pipeline
 				unstash 'tarball'
 				unstash 'spec'
 				sh 'rpmdev-setuptree ; cp rpm/dep/rpmmacros ~/.rpmmacros'
-				sh 'cp dist/${env.TARBALL} ~/rpmbuild/SOURCES/'
+				sh 'cp dist/${TARBALL} ~/rpmbuild/SOURCES/'
 				sh "rpmbuild -ba --define 'version ${env.RSAL_VERSION}' rpm/rsal.spec"
 				archiveArtifacts artifacts: "dist/${env.RPMFILE}"
 				stash name: 'rpm', includes: "dist/${env.RPMFILE}"
