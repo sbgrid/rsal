@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# "act like dataverse" calling RSAL to request publication"
+
 h=http://localhost:8889
 #h=http://localhost
 
@@ -16,7 +18,7 @@ TMPFILE=/tmp/${pid}.txt
 echo $invid > $TMPFILE
 echo "dataset.id=$dsid" >> $TMPFILE
 echo "dataset.identifier=$dsident" >> $TMPFILE
-echo "dataset.storageid_package=${stid}" >> $TMPFILE
+#echo "dataset.storageid_package=${stid}" >> $TMPFILE
 echo "dataset.globalId=${d_pid}" >> $TMPFILE
 
 curl -i -X POST --data-binary @$TMPFILE ${h}/rr.py
