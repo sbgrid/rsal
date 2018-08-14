@@ -43,10 +43,7 @@ rm -rf %{buildroot}
 /etc/rsal/lighttpd-modules-rsal
 /etc/rsal/rsal-rsyncd.conf
 /opt/rsal/api/*
-/opt/rsal/scn/pub.py
+/opt/rsal/scn/*
 /opt/rsal/scn/requirements.txt
-%dir %attr(0744,lighttpd,lighttpd) /deposit/requests
-%dir %attr(0744,lighttpd,lighttpd) /deposit/gen
-%dir %attr(0744,lighttpd,lighttpd) /deposit/processed
 %dir %attr(0744,lighttpd,lighttpd) /hold/requests
 %dir %attr(0744,lighttpd,lighttpd) /hold/stage
