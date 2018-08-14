@@ -1,0 +1,54 @@
+pipeline
+{
+	environment
+	{
+		RSAL_VERSION="0.1"
+		TARBALL="rsal-${RSAL_VERSION}.tar.gz"
+		RPMFILE="rsal-${RSAL_VERSION}-0.noarch.rpm"
+	}
+	agent none
+	stages
+	{
+		stage('repository checkout')
+		{
+			agent any
+			steps
+			{
+				checkout scm
+			}
+		}
+		stage('build tarball')
+		{
+			agent any
+			steps
+			{
+				sh 'scripts/tarball.bash'
+				archiveArtifacts artifacts: "dist/${env.TARBALL}"
+				stash name: 'tarball', includes: "dist/${env.TARBALL}"
+				stash name: 'spec', includes: 'rpm/*'
+			}
+		}
+		stage('build rpm')
+		{
+			agent
+			{
+				dockerfile
+				{
+					filename 'c7build.dockerfile'
+					dir 'rpm/dep'
+					additionalBuildArgs '-t c7build'
+				}
+			}
+			steps
+			{
+				unstash 'tarball'
+				unstash 'spec'
+				sh 'rpmdev-setuptree ; cp rpm/dep/rpmmacros ~/.rpmmacros'
+				sh 'cp dist/$tarball ~/rpmbuild/SOURCES/'
+				sh "rpmbuild -ba --define 'version ${env.RSAL_VERSION}' rpm/rsal.spec"
+				archiveArtifacts artifacts: "dist/${env.RPMFILE}"
+				stash name: 'rpm', includes: "dist/${env.RPMFILE}"
+			}
+		}
+	}
+}
