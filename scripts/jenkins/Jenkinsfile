@@ -15,6 +15,7 @@ pipeline
 			steps
 			{
 				checkout scm
+				stash name: 'testdata', includes: 'testdata/'
 			}
 		}
 		stage('build tarball')
@@ -65,6 +66,13 @@ pipeline
 				sh 'scripts/act_like_dv.bash'
 				sh 'docker exec rsal_srv /opt/rsal/scn/pub.py'
 				sh 'scripts/dl.bash'
+			}
+			post
+			{
+				always
+				{
+					sh 'docker-compose -f docker/compose0.yml --project-directory . down -v'
+				}
 			}
 		}
 	}
