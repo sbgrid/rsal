@@ -15,7 +15,6 @@ pipeline
 			steps
 			{
 				checkout scm
-				stash name: 'testdata', includes: 'testdata/'
 			}
 		}
 		stage('build tarball')
