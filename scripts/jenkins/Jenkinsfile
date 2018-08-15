@@ -1,0 +1,78 @@
+pipeline
+{
+	environment
+	{
+		RSAL_VERSION="0.1"
+		TARBALL="rsal-${RSAL_VERSION}.tar.gz"
+		RPMFILE="rsal-${RSAL_VERSION}-0.noarch.rpm"
+	}
+	agent none
+	stages
+	{
+		stage('repository checkout')
+		{
+			agent any
+			steps
+			{
+				checkout scm
+			}
+		}
+		stage('build tarball')
+		{
+			agent any
+			steps
+			{
+				sh 'scripts/tarball.bash'
+				archiveArtifacts artifacts: "dist/${env.TARBALL}"
+				stash name: 'tarball', includes: "dist/${env.TARBALL}"
+				stash name: 'spec', includes: 'rpm/*'
+			}
+		}
+		stage('build rpm')
+		{
+			agent
+			{
+				dockerfile
+				{
+					filename 'c7build.dockerfile'
+					dir 'rpm/dep'
+					additionalBuildArgs '-t c7build'
+				}
+			}
+			steps
+			{
+				unstash 'tarball'
+				unstash 'spec'
+				sh 'rpmdev-setuptree ; cp rpm/dep/rpmmacros ~/.rpmmacros'
+				sh 'cp dist/${TARBALL} ~/rpmbuild/SOURCES/'
+				sh "rpmbuild -ba --define 'version ${env.RSAL_VERSION}' rpm/rsal.spec"
+				sh "cp ~/rpmbuild/RPMS/noarch/${env.RPMFILE} dist"
+				archiveArtifacts artifacts: "dist/${env.RPMFILE}"
+				stash name: 'rpm', includes: "dist/${env.RPMFILE}"
+			}
+		}
+		stage('test rpm')
+		{
+			agent any
+			steps
+			{
+				unstash 'rpm'
+				/*this is ugly enough that it should probably have a client container too*/
+				sh "docker-compose -f docker/compose0.yml --project-directory . build --build-arg RPMFILE=${env.RPMFILE} rsal"
+				sh "docker-compose -f docker/compose0.yml --project-directory . build dv"
+				sh "docker-compose -f docker/compose0.yml --project-directory . up -d"
+				sh 'sleep 5'
+				sh 'scripts/act_like_dv.bash'
+				sh 'docker exec rsal_srv /opt/rsal/scn/pub.py'
+				sh 'scripts/dl.bash'
+			}
+			post
+			{
+				always
+				{
+					sh 'docker-compose -f docker/compose0.yml --project-directory . down -v'
+				}
+			}
+		}
+	}
+}

@@ -1,3 +1,8 @@
 *swp
 *pyc
 
+mocks/Resume.out
+env_admin.sh
+/testdata/
+tmp/
+dist/
