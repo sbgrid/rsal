@@ -1,0 +1,14 @@
+RSAL_PATH: "/usr/local/rsal"
+
+HOLD_DIRECTORY: "/hold"
+DOWNLOAD_DIRECTORY: "/public"
+DOI_PREFIX: "10.5072/FK2"
+DOI_AUTH: "10.5072"
+DOI_PATH: "FK2"
+
+# probably could be clearer than "RO_USER" 
+RO_USER: rsyncd
+RO_UID: 555
+RO_GROUP: rsyncd
+RO_GID: 555
+
