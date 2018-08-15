@@ -9,7 +9,7 @@ COPY doc/config/lighttpd-modules.conf /etc/lighttpd/modules.conf
 COPY doc//config/lighttpd.conf /etc/lighttpd/lighttpd.conf
 RUN mkdir -p /public/FK2 
 RUN pip2 install -r /opt/rsal/scn/requirements.txt
-COPY testdata/ /hold/
+COPY doc/testdata/ /hold/
 ARG DV_HOST=http://dv_srv:8080
 ARG DV_API_KEY=burrito
 ENV DV_HOST ${DV_HOST}
