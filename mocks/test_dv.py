@@ -25,11 +25,11 @@ class TestDV(TestCase):
     def test_resume_workflow(self):
         invk_id = 'MockInvocationId'
         r = self.app.post('/api/workflows/%s'%(invk_id), data='OK',headers={'X-Dataverse-key':'burrit'})
-        self.assertEqual(200, r.status_code)
+        self.assertEqual(202, r.status_code)
     def test_resume_workflow_authfail(self):
         invk_id = 'MockInvocationId'
         r = self.app.post('/api/workflows/%s'%(invk_id), data='OK')
-        self.assertNotEqual(200, r.status_code)
+        self.assertNotEqual(202, r.status_code)
     def test_version(self):
         r = self.app.get('/api/info/version')
         self.assertEqual(200,r.status_code)

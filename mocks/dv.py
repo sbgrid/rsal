@@ -19,7 +19,7 @@ def storage_id_query():
 def resume_workflow(x):
     try:
         dv_key = request.headers['X-Dataverse-key']
-        return 'workflow %s resumed\n' % x
+        return 'workflow %s resumed\n' % x, 202
     except KeyError:
         return 'unauthenticated for workflow %s resume'%x, 401
 
