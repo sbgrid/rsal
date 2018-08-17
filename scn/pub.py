@@ -38,7 +38,7 @@ def storage_id_query(dv_api_key, dv_host, dset_pid):
 def resume_workflow(dv_api_key, dv_host, invk_id):
     u = '%s/api/workflows/%s' % ( dv_host, invk_id )
     r = requests.post(u, data='OK',headers={'X-Dataverse-key':dv_api_key})
-    if 200 != r.status_code:
+    if 202 != r.status_code:
         sys.stderr.write('ERROR: problem resuming workflow %s (dataverse said %d)\n'%(invk_id,r.status_code))
         sys.exit(1)
 
