@@ -48,3 +48,4 @@ rm -rf %{buildroot}
 %dir %attr(0744,lighttpd,lighttpd) /hold/requests
 %dir %attr(0744,lighttpd,lighttpd) /hold/stage
 %dir %attr(0744,lighttpd,lighttpd) /public/stage
+%dir %attr(0744,root,root) /public/requests

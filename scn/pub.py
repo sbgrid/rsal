@@ -90,7 +90,8 @@ def pub(rfile, src=None, cfg=None):
         os.symlink( dst, src )
     else:
         sys.stdout.write('nothing to do %s (assuming minor version)'%pid)
-
+    # move the request file
+    shutil.move(rfile, os.path.join( REQPUB, os.path.basename(rfile) ) )
     # report to dataverse that workflow can resume 
     sys.stdout.write('telling DV to resume\n')
     resume_workflow(cfg['DV_API_KEY'],cfg['DV_HOST'],invk_id)
