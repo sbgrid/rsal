@@ -65,6 +65,9 @@ pipeline
 				sh 'scripts/act_like_dv.bash'
 				sh 'docker exec rsal_srv /opt/rsal/scn/pub.py'
 				sh 'scripts/dl.bash'
+				/* simulate minor version publication request (no-op on rsal side)*/
+				sh 'scripts/act_like_dv.bash'
+				sh 'docker exec rsal_srv /opt/rsal/scn/pub.py'
 			}
 			post
 			{

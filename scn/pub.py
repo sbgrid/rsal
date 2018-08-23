@@ -66,22 +66,33 @@ def pub(rfile, src=None, cfg=None):
     ident = x['datasetIdentifier']
     pid = x['datasetPersistentIdentifier']
     sys.stdout.write('PID %s : invocation %s\n'%(pid,invk_id))
+    # the workflow engine will send requests even in cases where the RSALs work is already done.
+    # Since there are no conditionals in the workflow logic, handle it here by checking to see 
+    #  if the destination already exists - if so, assume it's a minor version with nothing
+    #  to be done on this end.
+    dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
     if None == cfg:
         cfg = get_env_config()
-    sid = storage_id_query( cfg['DV_API_KEY'],cfg['DV_HOST'], pid ) # dataverse API query since storage id isn't available in workflow invocation
-    sys.stdout.write('storage ID: %s\n'%sid)
-    src = os.path.join(HOLD,ident,sid)
-    # sync/copy
-    dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
-    shutil.copytree( src, dst )
+    if not os.path.exists( dst ):
+        sys.stdout.write('work to be done for publishing %s'%pid)
+        sid = storage_id_query( cfg['DV_API_KEY'],cfg['DV_HOST'], pid ) # dataverse API query since storage id isn't available in workflow invocation
 
-    # verify (optional TODO)
 
-    # clean / symlink
-    shutil.rmtree( src )
-    os.symlink( dst, src )
+        sys.stdout.write('storage ID: %s\n'%sid)
+        src = os.path.join(HOLD,ident,sid)
+        # sync/copy
+        shutil.copytree( src, dst )
 
-    # report to dataverse that workflow can resume (TODO)
+        # verify (optional TODO)
+
+        # clean / symlink
+        shutil.rmtree( src )
+        os.symlink( dst, src )
+    else:
+        sys.stdout.write('nothing to do %s (assuming minor version)'%pid)
+    # move the request file
+    shutil.move(rfile, os.path.join( REQPUB, os.path.basename(rfile) ) )
+    # report to dataverse that workflow can resume 
     sys.stdout.write('telling DV to resume\n')
     resume_workflow(cfg['DV_API_KEY'],cfg['DV_HOST'],invk_id)
     sys.stdout.write('done\n')
