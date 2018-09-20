@@ -6,7 +6,7 @@ Source: rsal-%{version}.tar.gz
 BuildArch: noarch
 BuildRoot: %{_tmppath}/%{name}-${version}
 License: proprietary
-Requires: python34 python-virtualenv rsync lighttpd jq PyYAML python2-pip python34-pip
+Requires: python-virtualenv rsync lighttpd jq python-pip
 %description 
 repository storage abstraction layer, rsync
 
