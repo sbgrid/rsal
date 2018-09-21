@@ -1,0 +1,28 @@
+# docker-compose -f docker/compose_c6.yml --project-directory . build
+# docker-compose -f docker/compose_c6.yml --project-directory . up -d
+# docker-compose -f docker/compose_c6.yml --project-directory . down
+
+version: '3'
+
+services:
+  dv:
+    build:
+      context: .
+      dockerfile: docker/dv_mock.dockerfile
+    container_name: dv_srv
+    ports:
+      - '8083:8080'
+  rsal:
+    build:
+      context: .
+      dockerfile: docker/c6r.dockerfile
+    container_name: rsal_srv
+    environment:
+      #DV_HOST: dv
+      DV_HOST: http://dv_srv:8080
+      DV_APIKEY: burrito
+    ports:
+      - '8889:80'
+      - '873:873'
+    volumes:
+      - '.:/mnt'
