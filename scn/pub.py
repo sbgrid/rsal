@@ -70,7 +70,11 @@ def pub(rfile, src=None, cfg=None):
     # Since there are no conditionals in the workflow logic, handle it here by checking to see 
     #  if the destination already exists - if so, assume it's a minor version with nothing
     #  to be done on this end.
-    dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
+    # if the dataset identifier starts with the shoulder, it's  a newer dataverse API that includes it - so don't add the shoulder twice to the destination path
+    if x['datasetIdentifier'].startswith(DOISHOULDER):
+        dst = os.path.join( PUBLIC, x['datasetIdentifier'] )
+    else:
+        dst = os.path.join( PUBLIC, DOISHOULDER, x['datasetIdentifier'] )
     if None == cfg:
         cfg = get_env_config()
     if not os.path.exists( dst ):
