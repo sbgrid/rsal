@@ -14,13 +14,13 @@
 			<userRemoteConfigs>
 				<hudson.plugins.git.UserRemoteConfig>
 					<!-- adjust repository URL as appropriate -->
-					<url>http://localhost:8082/user0/rsal</url>
+					<url>https://github.com/sbgrid/rsal</url>
 				</hudson.plugins.git.UserRemoteConfig>
 			</userRemoteConfigs>
 			<branches>
 				<hudson.plugins.git.BranchSpec>
 					<!-- adjust branch as appropriate -->
-					<name>*/wksp201805</name>
+					<name>*/master</name>
 				</hudson.plugins.git.BranchSpec>
 			</branches>
 			<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
