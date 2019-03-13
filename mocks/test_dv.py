@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+'''
+test cases to assert that the mock dataverse is acting like the actual one (for these purposes).
+'''
+
 from flask import Flask
 from unittest import TestCase
 import requests
