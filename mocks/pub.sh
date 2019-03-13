@@ -6,6 +6,7 @@ logfile=pub.out
 # DVAPIKEY IN BASHRC
 source ${HOME}/.bashrc
 
+# change this to the dataverse host
 h=dvapp:8080
 invk_id=$1
 dset=$2

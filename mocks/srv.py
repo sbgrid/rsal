@@ -34,7 +34,6 @@ def dump_equest(v):
     return ("OK")
 
 #@app.route('/dump/<v>', methods=['POST', 'DELETE'])
-@app.route('/release/<v>', methods=['POST', 'DELETE'])
 def v2(v):
     body = request.data
     print('recieved body:')
@@ -54,10 +53,10 @@ def v2(v):
     did = get_identifier( lns )
     print('using %s as dataset identifier' % did )
     #print('calling subprocess')
-    
+
     subprocess.Popen( ['./pub.sh',inv_id, str(did)] ) # claims env_admin.sh not found; but manages to successfull resume the workflow after sleep regardless.
     print('done')
-    
+
     return ('OK')
 
 @app.route('/start/', methods=['POST'])
