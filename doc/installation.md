@@ -4,7 +4,7 @@ The RSAL is designed to work on linux systems, and should work on most unixes.
 For non-development work, either CentOS 6 or CentOS 7 are *strongly recommended*. Other versions and distributions should work, but you should know what you're doing.
 
 - configure NFS mounts for `/public` (only needs to be accessable from the RSAL) and `/hold` (needs to be shared by RSAL and Dataverse).
-- download RPM from the github *TODO release page*
+- download RPM from the github [release page](https://github.com/sbgrid/rsal/releases)
 - install RPM (and necessary dependencies). The EPEL repo is assumed to be available for these dependencies, but is not strictly required if you get the dependencies from elsewhere.
 - install pip dependencies (`pip install -r /opt/rsal/scn/requirements.txt`)
 - copy `/etc/dcm/lighttpd-conf-rsal` to `/etc/lighttpd/lighttpd.conf`, and edit if necessary (in particulary, to *restrict access to the Dataverse application server*).
